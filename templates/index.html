@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Car Price Prediction</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:linear-gradient(to right,#141e30,#243b55);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+
+        .main-box{
+            width:1100px;
+            background:white;
+            border-radius:20px;
+            overflow:hidden;
+            box-shadow:0px 0px 20px rgba(0,0,0,0.5);
+        }
+
+        .title{
+            background:#007bff;
+            color:white;
+            text-align:center;
+            padding:20px;
+            font-size:35px;
+            font-weight:bold;
+            letter-spacing:2px;
+        }
+
+        .content{
+            display:flex;
+            padding:20px;
+            gap:20px;
+        }
+
+        /* LEFT SIDE */
+
+        .left-side{
+            width:50%;
+            border:2px solid #007bff;
+            border-radius:15px;
+            padding:20px;
+        }
+
+        .form-group{
+            display:flex;
+            align-items:center;
+            margin-bottom:15px;
+        }
+
+        .form-group label{
+            width:40%;
+            font-size:17px;
+            font-weight:600;
+            color:#222;
+        }
+
+        .form-control{
+            width:60%;
+            height:40px;
+            border-radius:8px;
+            border:1px solid #999;
+        }
+
+        .btn-predict{
+            width:100%;
+            background:#007bff;
+            color:white;
+            border:none;
+            padding:12px;
+            border-radius:10px;
+            font-size:20px;
+            font-weight:bold;
+            margin-top:10px;
+        }
+
+        .btn-predict:hover{
+            background:#0056b3;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-side{
+            width:50%;
+            border:2px solid #007bff;
+            border-radius:15px;
+            padding:20px;
+            text-align:center;
+        }
+
+        .right-side img{
+            width:100%;
+            height:280px;
+            border-radius:15px;
+            object-fit:cover;
+            border:3px solid #007bff;
+        }
+
+        .car-model{
+            margin-top:15px;
+            font-size:28px;
+            font-weight:bold;
+            color:#007bff;
+        }
+
+        /* VALUES BOX */
+
+        .values-box{
+            margin-top:20px;
+            border:2px dashed #007bff;
+            border-radius:15px;
+            padding:15px;
+            text-align:left;
+        }
+
+        .values-box h3{
+            text-align:center;
+            margin-bottom:15px;
+            color:#007bff;
+        }
+
+        .value-row{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:10px;
+            font-size:17px;
+            font-weight:600;
+        }
+
+        /* PREDICTION BOX */
+
+        .prediction-box{
+            width:350px;
+            margin:20px auto;
+            background:#f4f4f4;
+            border:3px solid #007bff;
+            border-radius:15px;
+            padding:20px;
+            text-align:center;
+        }
+
+        .prediction-box h2{
+            color:#007bff;
+            margin-bottom:10px;
+        }
+
+        .prediction-box h1{
+            color:#111;
+            font-size:35px;
+            font-weight:bold;
+        }
+
+        /* FOOTER */
+
+        .footer{
+            background:#111;
+            color:white;
+            text-align:center;
+            padding:15px;
+            font-size:20px;
+            font-weight:600;
+        }
+
+        .footer span{
+            color:#00c3ff;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="main-box">
+
+    <div class="title">
+        CAR PRICE PREDICTION PROJECT
+    </div>
+
+    <form action="/predict" method="POST">
+
+        <div class="content">
+
+            <!-- LEFT SIDE -->
+
+            <div class="left-side">
+
+                <div class="form-group">
+                    <label>Brand</label>
+                    <input type="number" name="Brand" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="number" name="Year" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Engine Size</label>
+                    <input type="text" name="Engine_Size" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Fuel Type</label>
+                    <input type="number" name="Fuel_Type" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Transmission</label>
+                    <input type="number" name="Transmission" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mileage</label>
+                    <input type="text" name="Mileage" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Condition</label>
+                    <input type="number" name="Condition" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Model Number</label>
+
+                    <input type="number"
+                           name="Model"
+                           id="modelInput"
+                           class="form-control"
+                           onkeyup="changeCar()"
+                           required>
+                </div>
+
+                <button type="submit" class="btn-predict">
+                    Predict Price
+                </button>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="right-side">
+
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7"
+                     id="carImage">
+
+                <div class="car-model" id="carName">
+                    Tesla Model X
+                </div>
+
+                <!-- VALUES -->
+
+                <div class="values-box">
+
+                    <h3>Model Values</h3>
+
+                    <div class="value-row">
+                        <span>0</span>
+                        <span>Tesla Model X</span>
+                    </div>
+
+                    <div class="value-row">
+                        <span>1</span>
+                        <span>BMW 5 Series</span>
+                    </div>
+
+                    <div class="value-row">
+                        <span>2</span>
+                        <span>Audi A4</span>
+                    </div>
+
+                    <div class="value-row">
+                        <span>3</span>
+                        <span>Tesla Model Y</span>
+                    </div>
+
+                    <div class="value-row">
+                        <span>4</span>
+                        <span>Ford Mustang</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PREDICTION PRICE -->
+
+        <div class="prediction-box">
+
+            <h2>Predicted Price</h2>
+
+            <h1>
+                ₹ {{ prediction }}
+            </h1>
+
+        </div>
+
+    </form>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        Developed By <span>Kalpana</span> |
+        Institute Name : <span>Viharatech</span>
+
+    </div>
+
+</div>
+
+<script>
+
+    function changeCar(){
+
+        let model = document.getElementById("modelInput").value;
+
+        let image = document.getElementById("carImage");
+
+        let carName = document.getElementById("carName");
+
+        if(model == 0){
+
+            image.src = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7";
+
+            carName.innerHTML = "Tesla Model X";
+
+        }
+
+        else if(model == 1){
+
+            image.src = "https://images.unsplash.com/photo-1555215695-3004980ad54e";
+
+            carName.innerHTML = "BMW 5 Series";
+
+        }
+
+        else if(model == 2){
+
+            image.src = "https://images.unsplash.com/photo-1502877338535-766e1452684a";
+
+            carName.innerHTML = "Audi A4";
+
+        }
+
+        else if(model == 3){
+
+            image.src = "https://images.unsplash.com/photo-1549924231-f129b911e442";
+
+            carName.innerHTML = "Tesla Model Y";
+
+        }
+
+        else if(model == 4){
+
+            image.src = "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d";
+
+            carName.innerHTML = "Ford Mustang";
+
+        }
+
+        else{
+
+            image.src = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7";
+
+            carName.innerHTML = "Unknown Car";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
